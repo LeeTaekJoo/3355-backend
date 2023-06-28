@@ -48,12 +48,12 @@ public class PostService {
 	GoodRepository goodRepo;
 	@Autowired
 	CommRepository commRepo;
-  @Autowired
+	@Autowired
 	WorkRepository workRepo;
 
 	// 좋아요 Count 기준을 내림차순
 	public List<Map<String, Object>> getLikeCountsDesc() {
-	    return goodRepo.findLikeCountByPostNo();
+		return goodRepo.findLikeCountByPostNo();
 	}
 
 	// 날짜 기준으로 내림차순으로 모든 Post가져오기
@@ -170,24 +170,24 @@ public class PostService {
 			TagVO currentTag = tagRepo.findByTagContent(tag);
 			PostTagVO posttag = PostTagVO.builder().post(post).tag(currentTag).build();
 			posttagRepo.save(posttag);
-			
-			//하루에 한번 오운완 
-			if(tag.equals("오운완")) {
+
+			// 하루에 한번 오운완
+			if (tag.equals("오운완")) {
 				Calendar calendar = Calendar.getInstance();
-		        SimpleDateFormat dayFormat = new SimpleDateFormat("yy/MM/dd");
-		        String date = dayFormat.format(calendar.getTime());
-		        if(workRepo.findByWorkDateContaining3(date, userNo)==null) {
-		        	UserVO user1 = userRepo.findById(userNo).get();
-		        	WorkVO work = WorkVO.builder().user(user1).build();
-		        	workRepo.save(work);
-		        }
+				SimpleDateFormat dayFormat = new SimpleDateFormat("yy/MM/dd");
+				String date = dayFormat.format(calendar.getTime());
+				if (workRepo.findByWorkDateContaining3(date, userNo) == null) {
+					UserVO user1 = userRepo.findById(userNo).get();
+					WorkVO work = WorkVO.builder().user(user1).build();
+					workRepo.save(work);
+				}
 			}
 		}
 
 		return savePost.getPostNo();
 	}
 
-	//태그 10개 가져오기
+	// 태그 10개 가져오기
 	public List<String> getTags() {
 		List<String> taglist = tagRepo.findByTags();
 //		for(String tag:taglist) {
